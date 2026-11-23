@@ -176,6 +176,9 @@ a.ph:hover{color:var(--aegean);text-decoration:underline}
 .s-callback{background:#e5effb;color:#1b579b}
 .s-interested{background:#ddf3ef;color:#0d6a62}
 .s-joined{background:#dff3e5;color:#137a3a}
+.s-questionnaire_sent{background:#efeafa;color:#5a3f9c}
+.s-meeting_booked{background:#f8f0dc;color:#7d5f17}
+.s-questionnaire_filled{background:#e1f2ea;color:#22684a}
 .s-not_interested{background:#fbe7ea;color:#a3123a}
 .s-not_relevant{background:#e8ebee;color:#55616d}
 .due{font-size:12.5px;line-height:1.35}
@@ -382,6 +385,9 @@ const STATUSES = [
   { k: 'no_answer', label: 'No answer', c: '#c7680e' },
   { k: 'callback', label: 'Call back', c: '#1b579b' },
   { k: 'interested', label: 'Interested', c: '#0d8a7f' },
+  { k: 'questionnaire_sent', label: 'Questionnaire sent', c: '#6b4fb0' },
+  { k: 'meeting_booked', label: 'Meeting booked', c: '#a8842c' },
+  { k: 'questionnaire_filled', label: 'Questionnaire filled', c: '#2f7a5a' },
   { k: 'joined', label: 'Joined', c: '#137a3a' },
   { k: 'not_interested', label: 'Not interested', c: '#a3123a' },
   { k: 'not_relevant', label: 'Not relevant', c: '#8a96a3' }
@@ -551,6 +557,7 @@ function supabaseAPI() {
     async session() { return (await sb.auth.getSession()).data.session; },
     onAuth(cb) { sb.auth.onAuthStateChange((ev, s) => cb(ev, s)); },
     async profiles() { return ok(await sb.from('profiles').select('*').order('created_at')); },
+    async config() { return Object.fromEntries((ok(await sb.from('app_config').select('key,value')) || []).map(r => [r.key, r.value])); },
     async pros() {
       let all = [], from = 0; const step = 1000;
       for (;;) {
@@ -828,6 +835,7 @@ async function start() {
   const me = profiles.find(x => x.id === sess.user.id);
   if (!me || !me.active) { await API.signOut(); return renderLogin('This user is not active. Please contact your admin.'); }
   S.me = me; setProfiles(profiles);
+  try { S.cfg = API.config ? await API.config() : {}; } catch { S.cfg = {}; }
   try { setPros(await API.pros()); } catch (e) { return renderLogin(errText(e)); }
   renderShell();
   applyHash();
@@ -1051,6 +1059,13 @@ function renderList() {
 function chip(kind, val, label, n, on, color) {
   return `<button class="chip${on ? ' on' : ''}" data-chip="${kind}" data-val="${esc(val)}">${color ? `<span class="dot" style="background:${color}"></span>` : ''}${esc(label)}<span class="n">${nf(n)}</span></button>`;
 }
+function openBooking(p, mode) {
+  const base = S.cfg && S.cfg.booking_url;
+  if (!base) return toast('The booking form is not set up yet');
+  const q = { pid: p.id, uid: S.me.id, name: p.name || '', phone: p.phone || '', email: p.email || '', profession: p.sector || '', mode };
+  const url = base + (base.includes('?') ? '&' : '?') + Object.entries(q).map(([k, v]) => k + '=' + encodeURIComponent(v)).join('&');
+  window.open(url, '_blank', 'noopener');
+}
 function pill(st) { const s = ST[st] || { label: st }; return `<span class="pill s-${esc(st)}"><i></i>${esc(s.label)}</span>`; }
 function repChip(uid) { const p = prof(uid); if (!p) return '<span class="muted">—</span>'; return `<span class="rep"><span class="av" style="background:${colorOf(uid)}">${esc(initials(p.full_name))}</span><span>${esc(p.full_name.split(' ')[0])}</span></span>`; }
 function dueHTML(p) {
@@ -1258,6 +1273,10 @@ function drawerHTML(p) {
       </div>
       <div class="kv"><span>Address: <b><bdi>${esc(p.address || '—')}</bdi></b></span><span id="d-ph2"></span></div>
     </div>
+    <div class="sect"><h5>Meeting &amp; questionnaire</h5>
+      <div class="callrow"><button class="btn gold sm" data-d="book" title="Book a Google Meet meeting with this professional">Book meeting</button><button class="btn sm" data-d="sendq" title="Email the questionnaire without a meeting">Send questionnaire</button></div>
+      <div class="muted" style="font-size:12.5px;margin-top:6px">Opens the booking form with this professional's details filled in. Add the email there. The status here updates by itself.</div>
+    </div>
     <div class="sect"><h5>Status</h5><div id="d-st"></div>
       <div class="outs" id="d-outs">${OUTS.map(o => `<button class="out" data-out="${o.k}"><i style="background:${ST[o.k].c}"></i>${ST[o.k].label}<span class="k">${o.key}</span></button>`).join('')}</div>
       <div id="d-oform"></div>
@@ -1391,6 +1410,7 @@ function onDrawerClick(e) {
   if (a === 'nextrow') step(1);
   if (a === 'queue') goNext();
   if (a === 'keys') showKeys();
+  if (a === 'book' || a === 'sendq') return openBooking(p, a === 'sendq' ? 'send' : 'meet');
   if (a === 'copy') { navigator.clipboard?.writeText(p.phone || '').then(() => toast('Number copied'), () => { }); }
   if (a === 'ocancel') { S.outcome = null; renderOform(); }
   if (a === 'osave') submitOutcome();
