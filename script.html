@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vilaow · Call script for professionals</title>
+<style>
+  :root{--ink:#16233a;--muted:#5b6678;--line:#e3e0d8;--bg:#f7f5f0;--card:#fff;--gold:#a8842c;--say:#eef3fb;--sayline:#3b6fb6;--tip:#fbf6e9;--urg:#fdf0ea;--urgline:#c0562b;--zoom:#eef6f2;--zoomline:#2f7a5a}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+  .wrap{max-width:820px;margin:0 auto;padding:32px 20px 64px}
+  header{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:24px}
+  .eyebrow{color:var(--gold);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  h1{font:600 32px/1.2 Georgia,"Times New Roman",serif;margin:6px 0 8px}
+  .lead{color:var(--muted);margin:0}
+  .goal{margin:14px 0 0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+  .goal b{color:var(--zoomline)}
+  nav{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}
+  nav a{font-size:14px;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--card);padding:5px 12px;border-radius:999px}
+  nav a:hover{border-color:var(--gold)}
+  nav a.z{border-color:var(--zoomline);color:var(--zoomline);font-weight:600}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:0 0 18px}
+  section.zoom{border:2px solid var(--zoomline)}
+  h2{font:600 21px/1.3 Georgia,"Times New Roman",serif;margin:0 0 12px;display:flex;gap:10px;align-items:baseline}
+  h2 .n{font:700 13px/1 system-ui,sans-serif;color:#fff;background:var(--ink);border-radius:999px;padding:5px 9px;flex:none}
+  section.zoom h2 .n{background:var(--zoomline)}
+  h3{font-size:16px;margin:18px 0 6px}
+  p{margin:8px 0}
+  ul{margin:8px 0;padding-left:22px}
+  li{margin:4px 0}
+  .say{background:var(--say);border-left:4px solid var(--sayline);border-radius:8px;padding:12px 16px;margin:10px 0}
+  .say::before{content:"SAY";display:block;font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--sayline);margin-bottom:4px}
+  .say.urgent{background:var(--urg);border-left-color:var(--urgline)}
+  .say.urgent::before{content:"SAY · LIMITED TIME";color:var(--urgline)}
+  .tip{background:var(--tip);border-radius:8px;padding:10px 14px;margin:10px 0;font-size:15px}
+  .tip b{color:var(--gold)}
+  .ph{background:#fff3c4;border-radius:4px;padding:0 4px;font-weight:600}
+  .q{font-weight:700;margin-top:16px}
+  .link{word-break:break-all;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:8px 0}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:8px 0}
+  .grid span{border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:14px}
+  .check li{list-style:none;margin-left:-22px}
+  .check li::before{content:"☐ ";color:var(--gold)}
+  .meet{background:var(--zoom);border-radius:10px;padding:14px 16px;margin:12px 0}
+  .meet h3{margin:0 0 8px;color:var(--zoomline)}
+  .meet table{width:100%;border-collapse:collapse;font-size:15px}
+  .meet td{padding:7px 4px;border-bottom:1px dashed #bcd6c9;vertical-align:top}
+  .meet td:first-child{width:42%;font-weight:600}
+  .meet td:last-child{color:var(--muted)}
+  .meet iframe.book{width:100%;height:1050px;border:1px solid var(--line);border-radius:10px;background:#fff;display:block}
+  .small{font-size:14px;color:var(--muted)}
+  footer{color:var(--muted);font-size:13px;text-align:center;margin-top:24px}
+  @media print{body{background:#fff}nav{display:none}section{break-inside:avoid;border-color:#ccc}}
+
+  .top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--card)}
+  .lang button{border:0;background:transparent;font:600 13px/1 system-ui,sans-serif;padding:8px 14px;cursor:pointer;color:var(--ink)}
+  .lang button.on{background:var(--ink);color:#fff}
+  .el{display:none}
+  body.lang-el .el{display:inline}
+  body.lang-el .en{display:none}
+  body.lang-el .say::before{content:"ΠΕΙΤΕ"}
+  body.lang-el .say.urgent::before{content:"ΠΕΙΤΕ · ΠΕΡΙΟΡΙΣΜΕΝΟΣ ΧΡΟΝΟΣ"}
+  section.about{border:2px solid var(--gold)}
+  section.about h2 .n{background:var(--gold)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="top">
+    <div class="eyebrow">Vilaow · <span class="en">Customer service</span><span class="el" lang="el">Εξυπηρέτηση πελατών</span></div>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-l="en" class="on">English</button><button type="button" data-l="el">Ελληνικά</button>
+    </div>
+  </div>
+  <h1><span class="en">Phone call script for professionals</span><span class="el" lang="el">Σενάριο τηλεφωνικής κλήσης για επαγγελματίες</span></h1>
+  <p class="lead"><span class="en">What to do and what to say on every call to a property professional in Greece.</span><span class="el" lang="el">Τι κάνετε και τι λέτε σε κάθε κλήση προς επαγγελματία του χώρου των ακινήτων στην Ελλάδα.</span></p>
+  <div class="goal"><span class="en">The goal of every call: <b>book a Google Meet meeting</b> with the professional, where you fill in the Vilaow questionnaire together.</span><span class="el" lang="el">Ο στόχος κάθε κλήσης: <b>να κλείσετε συνάντηση στο Google Meet</b> με τον επαγγελματία, όπου θα συμπληρώσετε μαζί το ερωτηματολόγιο της Vilaow.</span></div>
+  <nav>
+    <a href="#about"><span class="en">About Vilaow</span><span class="el" lang="el">Σχετικά με τη Vilaow</span></a>
+    <a href="#before">1 · <span class="en">Before the call</span><span class="el" lang="el">Πριν την κλήση</span></a>
+    <a href="#open">2 · <span class="en">Opening</span><span class="el" lang="el">Άνοιγμα</span></a>
+    <a href="#why">3 · <span class="en">Why Vilaow</span><span class="el" lang="el">Γιατί Vilaow</span></a>
+    <a href="#fit">4 · <span class="en">Quick check</span><span class="el" lang="el">Γρήγορος έλεγχος</span></a>
+    <a href="#zoom" class="z">5 · <span class="en">Book the meeting</span><span class="el" lang="el">Κλείσιμο συνάντησης</span></a>
+    <a href="#close">6 · <span class="en">Closing</span><span class="el" lang="el">Κλείσιμο κλήσης</span></a>
+    <a href="#after">7 · <span class="en">After the call</span><span class="el" lang="el">Μετά την κλήση</span></a>
+    <a href="#meeting">8 · <span class="en">The Google Meet meeting</span><span class="el" lang="el">Η συνάντηση στο Google Meet</span></a>
+    <a href="#objections"><span class="en">Questions &amp; objections</span><span class="el" lang="el">Ερωτήσεις &amp; αντιρρήσεις</span></a>
+    <a href="#voicemail"><span class="en">Voicemail</span><span class="el" lang="el">Τηλεφωνητής</span></a>
+  </nav>
+</header>
+
+<section id="about" class="about">
+  <h2><span class="n">i</span><span class="en">About Vilaow: a short brief</span><span class="el" lang="el">Σχετικά με τη Vilaow: σύντομη ενημέρωση</span></h2>
+  <p><span class="en">Read this once before your first call, so you can answer simple questions with confidence.</span><span class="el" lang="el">Διαβάστε το μία φορά πριν την πρώτη σας κλήση, ώστε να απαντάτε με σιγουριά σε απλές ερωτήσεις.</span></p>
+  <ul>
+    <li><span class="en"><b>What we are:</b> Vilaow is a new technology platform that connects buyers from abroad with trusted property professionals in Greece.</span><span class="el" lang="el"><b>Τι είμαστε:</b> Η Vilaow είναι μια νέα τεχνολογική πλατφόρμα που συνδέει αγοραστές από το εξωτερικό με αξιόπιστους επαγγελματίες ακινήτων στην Ελλάδα.</span></li>
+    <li><span class="en"><b>Who the buyers are:</b> people from the UK, Germany, France, Israel and other countries who want to buy property in Greece and need professionals they can trust.</span><span class="el" lang="el"><b>Ποιοι είναι οι αγοραστές:</b> άνθρωποι από το Ηνωμένο Βασίλειο, τη Γερμανία, τη Γαλλία, το Ισραήλ και άλλες χώρες, που θέλουν να αγοράσουν ακίνητο στην Ελλάδα και χρειάζονται επαγγελματίες που μπορούν να εμπιστευτούν.</span></li>
+    <li><span class="en"><b>Who we work with:</b> real estate agents, lawyers, civil engineers, architects, contractors, property managers and tax advisors.</span><span class="el" lang="el"><b>Με ποιους συνεργαζόμαστε:</b> μεσίτες, δικηγόρους, πολιτικούς μηχανικούς, αρχιτέκτονες, εργολάβους, διαχειριστές ακινήτων και φοροτεχνικούς.</span></li>
+    <li><span class="en"><b>Where we are now:</b> the site is still being built. We are accepting a limited number of professionals now, so they are the first ones buyers see.</span><span class="el" lang="el"><b>Πού βρισκόμαστε τώρα:</b> η ιστοσελίδα είναι ακόμα υπό κατασκευή. Δεχόμαστε τώρα έναν περιορισμένο αριθμό επαγγελματιών, ώστε να είναι οι πρώτοι που βλέπουν οι αγοραστές.</span></li>
+    <li><span class="en"><b>What the professional gets:</b> a profile page that shows who they are, the areas they cover, their experience, the languages they speak and their past work. Buyers find them there and contact them.</span><span class="el" lang="el"><b>Τι κερδίζει ο επαγγελματίας:</b> μια σελίδα προφίλ που δείχνει ποιος είναι, τις περιοχές που καλύπτει, την εμπειρία του, τις γλώσσες που μιλάει και προηγούμενες δουλειές του. Οι αγοραστές τον βρίσκουν εκεί και επικοινωνούν μαζί του.</span></li>
+    <li><span class="en"><b>Cost:</b> joining is free right now, for a limited time. The professional does not pay us when work comes in. Don't promise that it will stay free forever. If asked, say it is free for those who join now.</span><span class="el" lang="el"><b>Κόστος:</b> η συμμετοχή είναι δωρεάν αυτή τη στιγμή, για περιορισμένο χρόνο. Ο επαγγελματίας δεν μας πληρώνει όταν του έρχεται δουλειά. Μην υπόσχεστε ότι θα μείνει δωρεάν για πάντα. Αν σας ρωτήσουν, πείτε ότι είναι δωρεάν για όσους μπαίνουν τώρα.</span></li>
+    <li><span class="en"><b>Checks:</b> we review every profile before it goes live. Licences and certificates are optional, but professionals who add them get priority.</span><span class="el" lang="el"><b>Έλεγχοι:</b> ελέγχουμε κάθε προφίλ πριν δημοσιευτεί. Οι άδειες και τα πιστοποιητικά είναι προαιρετικά, αλλά όσοι τα προσθέτουν έχουν προτεραιότητα.</span></li>
+    <li><span class="en"><b>How we found them:</b> through their public business listing on Google.</span><span class="el" lang="el"><b>Πώς τους βρήκαμε:</b> από τη δημόσια καταχώριση της επιχείρησής τους στο Google.</span></li>
+  </ul>
+</section>
+
+<section id="before">
+  <h2><span class="n">1</span><span class="en">Before the call</span><span class="el" lang="el">Πριν την κλήση</span></h2>
+  <ul class="check">
+    <li><span class="en">Know the business name, the profession and the area of the person you are calling.</span><span class="el" lang="el">Να γνωρίζετε το όνομα της επιχείρησης, το επάγγελμα και την περιοχή του ατόμου που καλείτε.</span></li>
+    <li><span class="en">Have your calendar open, so you can offer meeting times on the spot.</span><span class="el" lang="el">Έχετε ανοιχτό το ημερολόγιό σας, ώστε να προτείνετε ώρες συνάντησης αμέσως.</span></li>
+    <li><span class="en">The booking form is in section 5 of this page. The first time, fill in your name and the access code you got from your manager. The page remembers them.</span><span class="el" lang="el">Η φόρμα κράτησης βρίσκεται στην ενότητα 5 αυτής της σελίδας. Την πρώτη φορά, συμπληρώστε το όνομά σας και τον κωδικό πρόσβασης που σας έδωσε ο υπεύθυνός σας. Η σελίδα τα θυμάται.</span></li>
+    <li><span class="en">Have the questionnaire link at hand:</span><span class="el" lang="el">Έχετε πρόχειρο τον σύνδεσμο του ερωτηματολογίου:</span></li>
+  </ul>
+  <div class="link">https://script.google.com/macros/s/AKfycbxmcP-hc9qHOfGe7uE6UCU3DJmF4hdYudL5sHiP-o-sAxqPVVvaBc9S5EF6S5Q5wyyiTA/exec</div>
+  <p><span class="en">Vilaow works with seven professions:</span><span class="el" lang="el">Η Vilaow συνεργάζεται με επτά επαγγέλματα:</span></p>
+  <div class="grid">
+    <span><span class="en">Real Estate Agent</span><span class="el" lang="el">Μεσίτης</span></span><span><span class="en">Lawyer</span><span class="el" lang="el">Δικηγόρος</span></span><span><span class="en">Civil Engineer</span><span class="el" lang="el">Πολιτικός μηχανικός</span></span><span><span class="en">Architect</span><span class="el" lang="el">Αρχιτέκτονας</span></span><span><span class="en">Contractor</span><span class="el" lang="el">Εργολάβος</span></span><span><span class="en">Property Manager</span><span class="el" lang="el">Διαχειριστής ακινήτων</span></span><span><span class="en">Tax Advisor</span><span class="el" lang="el">Φοροτεχνικός</span></span>
+  </div>
+  <div class="tip"><span class="en"><b>Tip:</b> Smile when you talk, speak slowly and keep it short. The phone call is only to book the meeting, so it should take a few minutes.</span><span class="el" lang="el"><b>Συμβουλή:</b> Χαμογελάστε όταν μιλάτε, μιλήστε αργά και σύντομα. Η κλήση είναι μόνο για να κλείσετε τη συνάντηση, οπότε διαρκεί λίγα λεπτά.</span></div>
+</section>
+
+<section id="open">
+  <h2><span class="n">2</span><span class="en">Opening</span><span class="el" lang="el">Άνοιγμα</span></h2>
+  <div class="say"><span class="en">Hello, good morning. Am I speaking with <span class="ph"><span class="en">[business name]</span><span class="el" lang="el">[όνομα επιχείρησης]</span></span>?</span><span class="el" lang="el">Καλημέρα σας. Μιλάω με <span class="ph"><span class="en">[business name]</span><span class="el" lang="el">[όνομα επιχείρησης]</span></span>;</span></div>
+  <div class="say"><span class="en">My name is <span class="ph"><span class="en">[your name]</span><span class="el" lang="el">[το όνομά σας]</span></span>, I'm calling from Vilaow. Do you have two minutes?</span><span class="el" lang="el">Ονομάζομαι <span class="ph"><span class="en">[your name]</span><span class="el" lang="el">[το όνομά σας]</span></span> και σας καλώ από τη Vilaow. Έχετε δύο λεπτά;</span></div>
+  <div class="tip"><span class="en"><b>If they are busy:</b> “No problem. When is a good time to call you back?” Write down the time and call back then.</span><span class="el" lang="el"><b>Αν είναι απασχολημένοι:</b> «Κανένα πρόβλημα. Πότε σας βολεύει να σας ξανακαλέσω;» Σημειώστε την ώρα και καλέστε τότε.</span></div>
+</section>
+
+<section id="why">
+  <h2><span class="n">3</span><span class="en">Why Vilaow</span><span class="el" lang="el">Γιατί Vilaow</span></h2>
+  <div class="say"><span class="en">Vilaow is a platform that connects buyers from abroad with trusted, verified property professionals in Greece. We are building a list of the best <span class="ph"><span class="en">[profession]</span><span class="el" lang="el">[επάγγελμα]</span></span> in <span class="ph"><span class="en">[area]</span><span class="el" lang="el">[περιοχή]</span></span>, and we would like to include you.</span><span class="el" lang="el">Η Vilaow είναι μια πλατφόρμα που συνδέει αγοραστές από το εξωτερικό με αξιόπιστους, ελεγμένους επαγγελματίες ακινήτων στην Ελλάδα. Δημιουργούμε μια λίστα με τους καλύτερους <span class="ph"><span class="en">[profession]</span><span class="el" lang="el">[επάγγελμα]</span></span> στην περιοχή <span class="ph"><span class="en">[area]</span><span class="el" lang="el">[περιοχή]</span></span> και θα θέλαμε να σας συμπεριλάβουμε.</span></div>
+  <div class="say urgent"><span class="en">Right now, joining is free. But this is for a limited time only, for the professionals who join now. That's why I'm calling you today.</span><span class="el" lang="el">Αυτή τη στιγμή η συμμετοχή είναι δωρεάν. Ισχύει όμως μόνο για περιορισμένο χρόνο, για τους επαγγελματίες που μπαίνουν τώρα. Γι' αυτό σας καλώ σήμερα.</span></div>
+  <div class="say"><span class="en">Nothing is published on the site before we review it together with you.</span><span class="el" lang="el">Τίποτα δεν δημοσιεύεται στην ιστοσελίδα πριν το ελέγξουμε μαζί σας.</span></div>
+</section>
+
+<section id="fit">
+  <h2><span class="n">4</span><span class="en">Quick check</span><span class="el" lang="el">Γρήγορος έλεγχος</span></h2>
+  <p><span class="en">Confirm two things before you continue:</span><span class="el" lang="el">Επιβεβαιώστε δύο πράγματα πριν συνεχίσετε:</span></p>
+  <div class="say"><span class="en">Just to confirm, you work as a <span class="ph"><span class="en">[profession]</span><span class="el" lang="el">[επάγγελμα]</span></span>, and you mainly work in <span class="ph"><span class="en">[area]</span><span class="el" lang="el">[περιοχή]</span></span>?</span><span class="el" lang="el">Για να επιβεβαιώσω: εργάζεστε ως <span class="ph"><span class="en">[profession]</span><span class="el" lang="el">[επάγγελμα]</span></span> και κυρίως στην περιοχή <span class="ph"><span class="en">[area]</span><span class="el" lang="el">[περιοχή]</span></span>;</span></div>
+  <div class="say"><span class="en">Do you work with clients from abroad, or would you like to?</span><span class="el" lang="el">Συνεργάζεστε με πελάτες από το εξωτερικό ή θα θέλατε;</span></div>
+  <div class="tip"><span class="en"><b>If their profession is not one of the seven:</b> thank them politely and end the call.</span><span class="el" lang="el"><b>Αν το επάγγελμά τους δεν είναι ένα από τα επτά:</b> ευχαριστήστε τους ευγενικά και κλείστε την κλήση.</span></div>
+</section>
+
+<section id="zoom" class="zoom">
+  <h2><span class="n">5</span><span class="en">Book the meeting</span><span class="el" lang="el">Κλείσιμο συνάντησης</span></h2>
+  <div class="say"><span class="en">To build your profile, we have a short questionnaire. The easiest way is to go through it together on a short Google Meet video call. I'll guide you, and we'll fill it in together.</span><span class="el" lang="el">Για να δημιουργήσουμε το προφίλ σας, έχουμε ένα σύντομο ερωτηματολόγιο. Ο πιο εύκολος τρόπος είναι να το περάσουμε μαζί σε μια σύντομη βιντεοκλήση στο Google Meet. Θα σας καθοδηγήσω και θα το συμπληρώσουμε μαζί.</span></div>
+  <div class="say urgent"><span class="en">Since the free spots are limited, I'd like to book it soon. Does <span class="ph"><span class="en">[day]</span><span class="el" lang="el">[ημέρα]</span></span> at <span class="ph"><span class="en">[time]</span><span class="el" lang="el">[ώρα]</span></span> work for you, or is <span class="ph"><span class="en">[other day]</span><span class="el" lang="el">[άλλη ημέρα]</span></span> better?</span><span class="el" lang="el">Επειδή οι δωρεάν θέσεις είναι περιορισμένες, θα ήθελα να το κανονίσουμε σύντομα. Σας βολεύει <span class="ph"><span class="en">[day]</span><span class="el" lang="el">[ημέρα]</span></span> στις <span class="ph"><span class="en">[time]</span><span class="el" lang="el">[ώρα]</span></span> ή προτιμάτε <span class="ph"><span class="en">[other day]</span><span class="el" lang="el">[άλλη ημέρα]</span></span>;</span></div>
+  <div class="tip"><span class="en"><b>Always offer two specific options.</b> Don't ask “When are you free?”. A choice between two times gets a yes much faster.</span><span class="el" lang="el"><b>Προτείνετε πάντα δύο συγκεκριμένες επιλογές.</b> Μη ρωτάτε «Πότε είστε διαθέσιμος;». Η επιλογή ανάμεσα σε δύο ώρες φέρνει πολύ πιο γρήγορα ένα «ναι».</span></div>
+  <div class="meet">
+    <h3><span class="en">Fill in the booking form while you are on the call</span><span class="el" lang="el">Συμπληρώστε τη φόρμα κράτησης όσο είστε στην κλήση</span></h3>
+    <p class="small"><span class="en">Repeat the email back letter by letter. The time is always Greek time. When you press the button, two emails go out at once from hello@vilaow.com: the invitation with the Google Meet link, and a separate email with the questionnaire link.</span><span class="el" lang="el">Επαναλάβετε το email γράμμα προς γράμμα. Η ώρα είναι πάντα ώρα Ελλάδας. Όταν πατήσετε το κουμπί, φεύγουν αμέσως δύο email από το hello@vilaow.com: η πρόσκληση με τον σύνδεσμο του Google Meet και ένα ξεχωριστό email με τον σύνδεσμο του ερωτηματολογίου.</span></p>
+    <p class="small"><span class="en"><b>If they don't want a meeting:</b> press <b>Send questionnaire only</b> at the top of the form. Only the email with the questionnaire link is sent, without a meeting.</span><span class="el" lang="el"><b>Αν δεν θέλουν συνάντηση:</b> πατήστε <b>Send questionnaire only</b> στο πάνω μέρος της φόρμας. Στέλνεται μόνο το email με τον σύνδεσμο του ερωτηματολογίου, χωρίς συνάντηση.</span></p>
+    <p class="small"><span class="en">The form is in English. In the <b>Language</b> field, choose Greek if the professional prefers Greek, and the emails go out in Greek and English.</span><span class="el" lang="el">Η φόρμα είναι στα αγγλικά. Στο πεδίο <b>Language</b> επιλέξτε Greek αν ο επαγγελματίας προτιμά τα ελληνικά, και τα email θα σταλούν στα ελληνικά και στα αγγλικά.</span></p>
+    <iframe class="book" src="https://script.google.com/macros/s/AKfycbyg6RvdhtFdFJjDP6gcfz6tEauwxNP6AXBU7smdyd6RQdQ-42mQOF_QAGCzsF91PjDJkw/exec" title="Book the meeting"></iframe>
+    <p class="small"><span class="en">If the form doesn't load, <a href="https://script.google.com/macros/s/AKfycbyg6RvdhtFdFJjDP6gcfz6tEauwxNP6AXBU7smdyd6RQdQ-42mQOF_QAGCzsF91PjDJkw/exec" target="_blank" rel="noopener">open it in a new tab</a>.</span><span class="el" lang="el">Αν η φόρμα δεν φορτώσει, <a href="https://script.google.com/macros/s/AKfycbyg6RvdhtFdFJjDP6gcfz6tEauwxNP6AXBU7smdyd6RQdQ-42mQOF_QAGCzsF91PjDJkw/exec" target="_blank" rel="noopener">ανοίξτε την σε νέα καρτέλα</a>.</span></p>
+  </div>
+  <h3><span class="en">Ask them to prepare</span><span class="el" lang="el">Ζητήστε τους να ετοιμάσουν</span></h3>
+  <div class="say"><span class="en">Before the meeting, please have three things ready, so we can finish in one go:</span><span class="el" lang="el">Πριν τη συνάντηση, παρακαλώ έχετε έτοιμα τρία πράγματα, ώστε να τελειώσουμε με τη μία:</span></div>
+  <ul>
+    <li><span class="en"><b>A clear photo of yourself</b>, like a passport photo. Without a clear photo we can't accept the profile.</span><span class="el" lang="el"><b>Μια καθαρή φωτογραφία σας</b>, σαν φωτογραφία διαβατηρίου. Χωρίς καθαρή φωτογραφία δεν μπορούμε να δεχτούμε το προφίλ.</span></li>
+    <li><span class="en"><b>Photos of your past work.</b> This is the most important part. Clients want to see real work before they choose someone.</span><span class="el" lang="el"><b>Φωτογραφίες από προηγούμενες δουλειές σας.</b> Αυτό είναι το πιο σημαντικό μέρος. Οι πελάτες θέλουν να δουν πραγματική δουλειά πριν επιλέξουν κάποιον.</span></li>
+    <li><span class="en"><b>Your licences and certificates</b>, if you have them. They're optional, but professionals who add them get priority on the site.</span><span class="el" lang="el"><b>Τις άδειες και τα πιστοποιητικά σας</b>, αν έχετε. Είναι προαιρετικά, αλλά όσοι τα προσθέτουν έχουν προτεραιότητα στην ιστοσελίδα.</span></li>
+  </ul>
+</section>
+
+<section id="close">
+  <h2><span class="n">6</span><span class="en">Closing</span><span class="el" lang="el">Κλείσιμο κλήσης</span></h2>
+  <div class="say"><span class="en">Perfect. So we meet on Google Meet on <span class="ph"><span class="en">[day]</span><span class="el" lang="el">[ημέρα]</span></span> at <span class="ph"><span class="en">[time]</span><span class="el" lang="el">[ώρα]</span></span> Greek time. You'll get two emails from hello@vilaow.com right now: the meeting invitation, and the questionnaire link, so you can look at it before we meet.</span><span class="el" lang="el">Τέλεια. Τα λέμε λοιπόν στο Google Meet την <span class="ph"><span class="en">[day]</span><span class="el" lang="el">[ημέρα]</span></span> στις <span class="ph"><span class="en">[time]</span><span class="el" lang="el">[ώρα]</span></span>, ώρα Ελλάδας. Θα λάβετε τώρα δύο email από το hello@vilaow.com: την πρόσκληση για τη συνάντηση και τον σύνδεσμο του ερωτηματολογίου, για να του ρίξετε μια ματιά πριν τα πούμε.</span></div>
+  <div class="say"><span class="en">Thank you very much for your time, and have a great day.</span><span class="el" lang="el">Σας ευχαριστώ πολύ για τον χρόνο σας. Καλή συνέχεια!</span></div>
+</section>
+
+<section id="after">
+  <h2><span class="n">7</span><span class="en">After the call</span><span class="el" lang="el">Μετά την κλήση</span></h2>
+  <ul class="check">
+    <li><span class="en">Check that the booking form showed the green confirmation, with the right email and time.</span><span class="el" lang="el">Ελέγξτε ότι η φόρμα έδειξε την πράσινη επιβεβαίωση, με το σωστό email και την σωστή ώρα.</span></li>
+    <li><span class="en">The meeting is saved automatically in the Meetings tab of the sheet and in the hello@vilaow.com calendar.</span><span class="el" lang="el">Η συνάντηση αποθηκεύεται αυτόματα στην καρτέλα Meetings του φύλλου και στο ημερολόγιο του hello@vilaow.com.</span></li>
+    <li><span class="en">On the day of the meeting, send a short reminder by WhatsApp or email a few hours before.</span><span class="el" lang="el">Την ημέρα της συνάντησης, στείλτε μια σύντομη υπενθύμιση με WhatsApp ή email λίγες ώρες νωρίτερα.</span></li>
+  </ul>
+</section>
+
+<section id="meeting">
+  <h2><span class="n">8</span><span class="en">The Google Meet meeting</span><span class="el" lang="el">Η συνάντηση στο Google Meet</span></h2>
+  <ul class="check">
+    <li><span class="en">Open the Google Meet link from the invitation, signed in to Google as hello@vilaow.com.</span><span class="el" lang="el">Ανοίξτε τον σύνδεσμο του Google Meet από την πρόσκληση, συνδεδεμένοι στο Google ως hello@vilaow.com.</span></li>
+    <li><span class="en">Open the questionnaire link and ask them to open it on their side too.</span><span class="el" lang="el">Ανοίξτε τον σύνδεσμο του ερωτηματολογίου και ζητήστε τους να τον ανοίξουν κι εκείνοι.</span></li>
+    <li><span class="en">Ask them to choose their profession and language (English or Greek).</span><span class="el" lang="el">Ζητήστε τους να επιλέξουν το επάγγελμά τους και τη γλώσσα (αγγλικά ή ελληνικά).</span></li>
+    <li><span class="en">Go through the questions together. Let them answer in their own words, and help when they get stuck.</span><span class="el" lang="el">Περάστε τις ερωτήσεις μαζί. Αφήστε τους να απαντήσουν με δικά τους λόγια και βοηθήστε όταν κολλήσουν.</span></li>
+    <li><span class="en">Make sure they upload a clear profile photo and photos of their past work.</span><span class="el" lang="el">Βεβαιωθείτε ότι ανεβάζουν καθαρή φωτογραφία προφίλ και φωτογραφίες από προηγούμενες δουλειές τους.</span></li>
+    <li><span class="en">Remind them that licences are optional, but give priority.</span><span class="el" lang="el">Θυμίστε τους ότι οι άδειες είναι προαιρετικές, αλλά δίνουν προτεραιότητα.</span></li>
+    <li><span class="en">At the end, make sure they press the button to send the questionnaire.</span><span class="el" lang="el">Στο τέλος, βεβαιωθείτε ότι πατούν το κουμπί για να στείλουν το ερωτηματολόγιο.</span></li>
+  </ul>
+  <div class="say"><span class="en">Thank you. Everything is sent. We'll review your profile and get back to you before anything is published.</span><span class="el" lang="el">Σας ευχαριστώ. Όλα στάλθηκαν. Θα ελέγξουμε το προφίλ σας και θα επικοινωνήσουμε μαζί σας πριν δημοσιευτεί οτιδήποτε.</span></div>
+</section>
+
+<section id="objections">
+  <h2><span class="n">?</span><span class="en">Questions &amp; objections</span><span class="el" lang="el">Ερωτήσεις &amp; αντιρρήσεις</span></h2>
+  <p class="q"><span class="en">“How much does it cost?”</span><span class="el" lang="el">«Πόσο κοστίζει;»</span></p>
+  <div class="say urgent"><span class="en">Right now it's free, but only for a limited time, for the professionals who join now.</span><span class="el" lang="el">Αυτή τη στιγμή είναι δωρεάν, αλλά μόνο για περιορισμένο χρόνο, για τους επαγγελματίες που μπαίνουν τώρα.</span></div>
+  <p class="q"><span class="en">“I'll think about it and call you back.”</span><span class="el" lang="el">«Θα το σκεφτώ και θα σας πάρω πίσω.»</span></p>
+  <div class="say urgent"><span class="en">Of course. Just keep in mind that the free spots are for a limited time. Let's book a time now, and if it doesn't suit you, you can always cancel.</span><span class="el" lang="el">Βεβαίως. Έχετε μόνο υπόψη ότι οι δωρεάν θέσεις ισχύουν για περιορισμένο χρόνο. Ας κλείσουμε τώρα μια ώρα, και αν δεν σας βολεύει, μπορείτε πάντα να την ακυρώσετε.</span></div>
+  <p class="q"><span class="en">“I don't have time for a video meeting.”</span><span class="el" lang="el">«Δεν έχω χρόνο για βιντεοκλήση.»</span></p>
+  <div class="say"><span class="en">I understand. It's a short call, and we fill everything in together, so it actually saves you time. Is early morning or late afternoon better for you?</span><span class="el" lang="el">Το καταλαβαίνω. Είναι μια σύντομη κλήση και τα συμπληρώνουμε όλα μαζί, οπότε στην πραγματικότητα σας εξοικονομεί χρόνο. Σας βολεύει καλύτερα νωρίς το πρωί ή αργά το απόγευμα;</span></div>
+  <p class="q"><span class="en">“Can I just fill it in myself?”</span><span class="el" lang="el">«Μπορώ να το συμπληρώσω μόνος μου;»</span></p>
+  <div class="say"><span class="en">Of course. I'll send you the link by email. It's in English and Greek, and it saves your answers as a draft, so you can stop and continue later. If you get stuck, we're happy to set up a Google Meet call.</span><span class="el" lang="el">Φυσικά. Θα σας στείλω τον σύνδεσμο με email. Είναι στα αγγλικά και στα ελληνικά και αποθηκεύει τις απαντήσεις σας ως πρόχειρο, ώστε να μπορείτε να σταματήσετε και να συνεχίσετε αργότερα. Αν κολλήσετε, ευχαρίστως να κανονίσουμε μια κλήση στο Google Meet.</span></div>
+  <div class="tip"><span class="en">Use <b>Send questionnaire only</b> in the form in section 5. The email goes out right away from hello@vilaow.com.</span><span class="el" lang="el">Χρησιμοποιήστε το <b>Send questionnaire only</b> στη φόρμα της ενότητας 5. Το email φεύγει αμέσως από το hello@vilaow.com.</span></div>
+  <p class="q"><span class="en">“Can we do it in Greek?”</span><span class="el" lang="el">«Μπορούμε να το κάνουμε στα ελληνικά;»</span></p>
+  <div class="say"><span class="en">Yes, the questionnaire is available in both English and Greek.</span><span class="el" lang="el">Ναι, το ερωτηματολόγιο είναι διαθέσιμο και στα αγγλικά και στα ελληνικά.</span></div>
+  <p class="q"><span class="en">“How did you get my number?”</span><span class="el" lang="el">«Πού βρήκατε τον αριθμό μου;»</span></p>
+  <div class="say"><span class="en">From your public business listing on Google.</span><span class="el" lang="el">Από τη δημόσια καταχώριση της επιχείρησής σας στο Google.</span></div>
+  <p class="q"><span class="en">“Why do you need my licences?”</span><span class="el" lang="el">«Γιατί χρειάζεστε τις άδειές μου;»</span></p>
+  <div class="say"><span class="en">It's optional. We use them to verify professionals, and verified professionals get priority on the site.</span><span class="el" lang="el">Είναι προαιρετικό. Τις χρησιμοποιούμε για να επαληθεύουμε τους επαγγελματίες, και όσοι είναι επαληθευμένοι έχουν προτεραιότητα στην ιστοσελίδα.</span></div>
+  <p class="q"><span class="en">“Will my details be published right away?”</span><span class="el" lang="el">«Θα δημοσιευτούν αμέσως τα στοιχεία μου;»</span></p>
+  <div class="say"><span class="en">No. Nothing is published before we review it together with you.</span><span class="el" lang="el">Όχι. Τίποτα δεν δημοσιεύεται πριν το ελέγξουμε μαζί σας.</span></div>
+  <p class="q"><span class="en">“Just send me some information.”</span><span class="el" lang="el">«Στείλτε μου απλώς κάποιες πληροφορίες.»</span></p>
+  <div class="say"><span class="en">Of course. What is the best email? I'll send you everything. And since the free spots are limited, may I also suggest a time for a short Google Meet call?</span><span class="el" lang="el">Βεβαίως. Ποιο είναι το καλύτερο email; Θα σας τα στείλω όλα. Και επειδή οι δωρεάν θέσεις είναι περιορισμένες, να σας προτείνω και μια ώρα για μια σύντομη κλήση στο Google Meet;</span></div>
+  <p class="q"><span class="en">“I'm not interested.”</span><span class="el" lang="el">«Δεν με ενδιαφέρει.»</span></p>
+  <div class="say"><span class="en">I understand, thank you for your time. If anything changes, you're welcome to contact us. Have a great day.</span><span class="el" lang="el">Το καταλαβαίνω, σας ευχαριστώ για τον χρόνο σας. Αν αλλάξει κάτι, είστε ευπρόσδεκτος να επικοινωνήσετε μαζί μας. Καλή συνέχεια.</span></div>
+  <div class="tip"><span class="en"><b>Don't push.</b> End the call politely.</span><span class="el" lang="el"><b>Μην πιέζετε.</b> Κλείστε την κλήση ευγενικά.</span></div>
+  <p class="q"><span class="en">A question you don't know the answer to</span><span class="el" lang="el">Μια ερώτηση που δεν ξέρετε την απάντηση</span></p>
+  <div class="say"><span class="en">That's a good question. Let me check and get back to you by email.</span><span class="el" lang="el">Καλή ερώτηση. Θα το ελέγξω και θα σας απαντήσω με email.</span></div>
+  <div class="tip"><span class="en">Never guess. Write the question down and pass it on.</span><span class="el" lang="el">Μην μαντεύετε ποτέ. Σημειώστε την ερώτηση και προωθήστε την.</span></div>
+</section>
+
+<section id="voicemail">
+  <h2><span class="n">✆</span><span class="en">If you reach voicemail</span><span class="el" lang="el">Αν απαντήσει τηλεφωνητής</span></h2>
+  <div class="say"><span class="en">Hello, this is <span class="ph"><span class="en">[your name]</span><span class="el" lang="el">[το όνομά σας]</span></span> from Vilaow. We connect buyers from abroad with trusted property professionals in Greece, and we'd like to include you on our platform. Joining is free right now, but only for a limited time. I'll try you again soon. Thank you, and have a great day.</span><span class="el" lang="el">Καλημέρα σας, είμαι <span class="ph"><span class="en">[your name]</span><span class="el" lang="el">[το όνομά σας]</span></span> από τη Vilaow. Συνδέουμε αγοραστές από το εξωτερικό με αξιόπιστους επαγγελματίες ακινήτων στην Ελλάδα και θα θέλαμε να σας συμπεριλάβουμε στην πλατφόρμα μας. Η συμμετοχή είναι δωρεάν αυτή τη στιγμή, αλλά μόνο για περιορισμένο χρόνο. Θα σας ξανακαλέσω σύντομα. Σας ευχαριστώ και καλή συνέχεια.</span></div>
+  <div class="tip"><span class="en">Call again on another day, at a different time.</span><span class="el" lang="el">Καλέστε ξανά άλλη ημέρα, σε διαφορετική ώρα.</span></div>
+</section>
+
+<footer><span class="en">Vilaow · Internal call script for customer service</span><span class="el" lang="el">Vilaow · Εσωτερικό σενάριο κλήσεων για την εξυπηρέτηση πελατών</span></footer>
+
+</div>
+<script>
+(function () {
+  var KEY = 'vilaow-script-lang';
+  function setLang(l) {
+    document.body.classList.toggle('lang-el', l === 'el');
+    document.documentElement.lang = l;
+    document.querySelectorAll('.lang button').forEach(function (b) { b.classList.toggle('on', b.dataset.l === l); });
+    try { localStorage.setItem(KEY, l); } catch (e) {}
+  }
+  document.querySelectorAll('.lang button').forEach(function (b) { b.addEventListener('click', function () { setLang(b.dataset.l); }); });
+  var saved = 'en';
+  try { saved = localStorage.getItem(KEY) || 'en'; } catch (e) {}
+  setLang(saved);
+})();
+</script>
+</body>
+</html>
