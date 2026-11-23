@@ -1042,6 +1042,7 @@ function renderList() {
       ${shown.map(rowHTML).join('')}
     </div>
     ${rows.length > shown.length ? `<div class="more"><button class="btn" data-ctl="more">Show ${nf(Math.min(250, rows.length - shown.length))} more (of ${nf(rows.length)})</button></div>` : ''}`
+    : !S.pros.length && isAdmin() ? `<div class="tbl"><div class="empty"><b>No professionals in the system yet</b>Load your list from Excel: <a href="#admin" data-ctl="goimport">Admin › Import & export</a></div></div>`
     : `<div class="tbl"><div class="empty"><b>${f.view === 'due' ? 'No follow-ups due today' : 'No results'}</b>${f.view === 'due' ? 'Well done. Carry on with new professionals using "Next call".' : 'Try changing the filters or the search.'}</div></div>`;
 }
 function chip(kind, val, label, n, on, color) {
@@ -1105,6 +1106,7 @@ async function onMainClick(e) {
   if (ctl === 'next') return goNext();
   if (ctl === 'more') { S.limit += 250; return renderList(); }
   if (ctl === 'clearq') { clearSearch(); return renderList(); }
+  if (ctl === 'goimport') { e.preventDefault(); S.adminTab = 'data'; return goAdmin(); }
   if (ctl === 'bclr') { S.sel.clear(); return renderList(); }
   if (ctl === 'bexp') return exportRows(S.pros.filter(p => S.sel.has(p.id)), 'vilaow-selected');
   if (ctl === 'bdel') {
