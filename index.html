@@ -547,6 +547,7 @@ function supabaseAPI() {
     },
     async signIn(u, p) { return ok(await sb.auth.signInWithPassword({ email: email(u), password: p })); },
     async signOut() { try { await sb.auth.signOut(); } catch { } },
+    async changePassword(pw) { const { error } = await sb.auth.updateUser({ password: pw }); if (error) throw error; },
     async session() { return (await sb.auth.getSession()).data.session; },
     onAuth(cb) { sb.auth.onAuthStateChange((ev, s) => cb(ev, s)); },
     async profiles() { return ok(await sb.from('profiles').select('*').order('created_at')); },
@@ -930,6 +931,7 @@ function openMeMenu(e) {
   const m = document.createElement('div');
   m.className = 'menu';
   m.innerHTML = `<div style="padding:8px 10px 10px;border-bottom:1px solid var(--line);margin-bottom:4px"><b>${esc(S.me.full_name)}</b><div class="muted" style="font-size:12.5px">${esc(S.me.username)}</div></div>
+    <button data-m="pw">${ico('user')}Change password</button>
     <button data-m="keys">${ico('keys')}Keyboard shortcuts</button>
     ${isAdmin() ? `<button data-m="admin">${ico('shield')}Admin</button>` : ''}
     <button data-m="out">${ico('out')}Sign out</button>`;
@@ -940,6 +942,7 @@ function openMeMenu(e) {
     const b = ev.target.closest('[data-m]'); if (!b) return;
     m.remove();
     if (b.dataset.m === 'keys') showKeys();
+    if (b.dataset.m === 'pw') changePasswordBox();
     if (b.dataset.m === 'admin') goAdmin();
     if (b.dataset.m === 'out') { Saver.flushAll(); await API.signOut(); location.hash = ''; location.reload(); }
   };
@@ -1784,6 +1787,25 @@ function runImport(rows, { title, auto } = {}) {
 }
 
 /* ================= keyboard ================= */
+function changePasswordBox() {
+  modal(`<h3>Change password</h3><p>Signed in as <b>${esc(S.me.username)}</b></p>
+    <div class="field"><label class="lab" for="cp1">New password</label><input class="inp" id="cp1" type="password" autocomplete="new-password"></div>
+    <div class="field"><label class="lab" for="cp2">Confirm new password</label><input class="inp" id="cp2" type="password" autocomplete="new-password"></div>
+    <div class="err" id="cpe"></div>
+    <div class="acts"><button class="btn" data-x>Cancel</button><button class="btn pri" data-ok>Save password</button></div>`, (box, close) => {
+    box.querySelector('[data-x]').onclick = close;
+    const go = async () => {
+      const a = box.querySelector('#cp1').value, b = box.querySelector('#cp2').value, e = box.querySelector('#cpe');
+      if (a.length < 6) { e.textContent = errText('weak_password'); return; }
+      if (a !== b) { e.textContent = 'Passwords do not match'; return; }
+      const btn = box.querySelector('[data-ok]'); btn.disabled = true;
+      try { await API.changePassword(a); close(); toast('Password changed'); }
+      catch (x) { btn.disabled = false; e.textContent = /different from the old/i.test(x?.message || '') ? 'Choose a password different from the current one' : errText(x); }
+    };
+    box.querySelector('[data-ok]').onclick = go;
+    box.querySelector('#cp2').onkeydown = ev => { if (ev.key === 'Enter') go(); };
+  });
+}
 function showKeys() {
   modal(`<h3>Keyboard shortcuts</h3><p>They work with any keyboard layout.</p><div class="keys">
     <kbd>N</kbd><span>Open the next call in the queue</span>
