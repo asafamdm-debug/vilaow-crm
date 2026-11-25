@@ -582,6 +582,7 @@ function supabaseAPI() {
       if (error) throw error; return count || 0;
     },
     async stats(from) { return ok(await sb.rpc('admin_stats', { p_from: from })); },
+    async outreach(tz) { return ok(await sb.rpc('outreach_daily', { p_tz: tz })); },
     async bulk(ids, action, value) { return ok(await sb.rpc('admin_bulk', { p_ids: ids, p_action: action, p_value: value ?? null })); },
     async insert(rows) { return ok(await sb.from('professionals').insert(rows).select('*')); },
     realtime(h) {
@@ -589,6 +590,7 @@ function supabaseAPI() {
         .on('postgres_changes', { event: '*', schema: 'public', table: 'professionals' }, p => h.pro(p.eventType, p.new, p.old))
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'activities' }, p => h.act(p.new))
         .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, p => h.profile(p.eventType, p.new, p.old))
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'outreach_events' }, p => h.send && h.send(p.new))
         .subscribe(st => h.status(st));
     },
     presence(uid, state, onSync) {
@@ -610,7 +612,7 @@ const S = {
   openId: null, outcome: null, acts: [], actsFor: null,
   presence: new Map(), pres: null,
   autoNext: ls('autoNext', '1') === '1',
-  today: 0, feed: [], stats: null, hiddenAt: 0
+  today: 0, feed: [], stats: null, hiddenAt: 0, sends: null, sendMonth: null
 };
 let SEED_CACHE = null;
 function seedRows() {
@@ -841,7 +843,7 @@ async function start() {
   applyHash();
   if (!started) {
     started = true;
-    API.realtime({ pro: onProEvent, act: onActEvent, profile: onProfileEvent, status: onRtStatus });
+    API.realtime({ pro: onProEvent, act: onActEvent, profile: onProfileEvent, status: onRtStatus, send: onSendEvent });
     S.pres = API.presence(S.me.id, presenceState, onPresence);
     setInterval(refreshToday, 5 * 60e3);
     setInterval(() => scheduleRender(), 60e3);
@@ -862,7 +864,9 @@ function onProEvent(type, row, old) { if (type === 'DELETE') removePro(old?.id);
 function onActEvent(a) {
   if (S.openId && a.professional_id === S.openId && S.actsFor === S.openId && !S.acts.some(x => x.id === a.id)) { S.acts.unshift(a); renderHist(); }
   if (S.page === 'admin') { S.feed.unshift(a); S.feed = S.feed.slice(0, 200); if (S.adminTab === 'feed') renderAdmin(); }
+  if (S.page === 'admin' && S.adminTab === 'sends' && a.outcome === 'joined') reloadSendsSoon();
 }
+function onSendEvent() { if (S.page === 'admin' && S.adminTab === 'sends') reloadSendsSoon(); }
 function onProfileEvent(type, row) {
   if (type === 'DELETE' || !row) return;
   S.profiles.set(row.id, row);
@@ -1525,6 +1529,45 @@ async function loadFeed() { try { S.feed = await API.recent(150); } catch { S.fe
 let todayStats = new Map();
 async function loadTodayStats() { try { todayStats = new Map((await API.stats(periodFrom('today'))).map(r => [r.user_id, r])); } catch { } if (S.page === 'admin' && S.adminTab === 'team') renderAdmin(true); }
 
+/* Emails, meetings & joins: daily counts in this computer's time zone */
+let sendsTimer = null;
+async function loadSends() {
+  const tz = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Asia/Jerusalem'; } catch { return 'Asia/Jerusalem'; } })();
+  try { S.sends = await API.outreach(tz); }
+  catch (e) { try { S.sends = await API.outreach('Asia/Jerusalem'); } catch { S.sends = []; toast(errText(e), true); } }
+  if (S.page === 'admin' && S.adminTab === 'sends') renderAdmin(true);
+}
+function reloadSendsSoon() { clearTimeout(sendsTimer); sendsTimer = setTimeout(loadSends, 1200); }
+function dayKey(d) { return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
+function admSends() {
+  const rows = S.sends;
+  if (rows == null) return '<div class="card"><div class="empty"><span class="spin"></span></div></div>';
+  const K = [['questionnaire_sent', 'Questionnaire emails sent'], ['meeting_booked', 'Meetings booked'], ['joined', 'Joined']];
+  const now = new Date(), todayK = dayKey(now), monthK = todayK.slice(0, 7);
+  const by = new Map(rows.map(r => [String(r.day).slice(0, 10), r]));
+  const val = (r, k) => Number(r?.[k] || 0);
+  const sum = (k, test) => rows.reduce((a, r) => a + (test(String(r.day)) ? val(r, k) : 0), 0);
+  const num = v => v ? `<b>${nf(v)}</b>` : '<span class="muted">0</span>';
+  const summary = `<div class="card"><h3>Emails, meetings & joins</h3><div class="scroll"><table class="t">
+    <thead><tr><th></th><th class="n">Today</th><th class="n">This month</th><th class="n">All time</th></tr></thead>
+    <tbody>${K.map(([k, l]) => `<tr><td><b>${l}</b></td><td class="n">${num(val(by.get(todayK), k))}</td><td class="n">${num(sum(k, d => d.startsWith(monthK)))}</td><td class="n">${num(sum(k, () => true))}</td></tr>`).join('')}</tbody></table></div>
+    <div class="hint" style="margin:10px 0 0">Emails and meetings are counted when a rep sends them from the booking page. Joined counts professionals whose status is Joined, on the day they first got it. Days follow this computer's time zone.</div></div>`;
+  const months = [...new Set(rows.map(r => String(r.day).slice(0, 7)).concat(monthK))].sort().reverse();
+  const sel = months.includes(S.sendMonth) ? S.sendMonth : monthK;
+  const [y, m] = sel.split('-').map(Number);
+  const lastDay = sel === monthK ? now.getDate() : new Date(y, m, 0).getDate();
+  const days = []; for (let d = lastDay; d >= 1; d--) days.push(`${sel}-${pad(d)}`);
+  const mLabel = k => { const [a, b] = k.split('-').map(Number); return new Date(a, b - 1, 1).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' }); };
+  const dLabel = k => { const [a, b, c] = k.split('-').map(Number); return new Date(a, b - 1, c).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }); };
+  const daily = `<div class="card"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px"><h3 style="margin:0">By day · ${esc(mLabel(sel))}</h3><span style="flex:1"></span>
+      ${months.length > 1 ? `<div class="chips" style="margin:0">${months.map(k => `<button class="chip${k === sel ? ' on' : ''}" data-smonth="${k}">${esc(mLabel(k))}</button>`).join('')}</div>` : ''}</div>
+    <div class="scroll"><table class="t">
+    <thead><tr><th>Day</th>${K.map(([, l]) => `<th class="n">${l.replace(' sent', '')}</th>`).join('')}</tr></thead>
+    <tbody>${days.map(d => { const r = by.get(d); return `<tr><td>${esc(dLabel(d))}${d === todayK ? ' <span class="pill s-interested" style="height:20px;font-size:11px">Today</span>' : ''}</td>${K.map(([k]) => `<td class="n">${num(val(r, k))}</td>`).join('')}</tr>`; }).join('')}
+    <tr style="font-weight:800"><td>Total ${esc(mLabel(sel).split(' ')[0])}</td>${K.map(([k]) => `<td class="n">${nf(sum(k, d => d.startsWith(sel)))}</td>`).join('')}</tr></tbody></table></div></div>`;
+  return summary + daily;
+}
+
 function teamFormBusy() { return S.adminTab === 'team' && $$('#nu input').some(i => i.value.trim()); }
 function renderAdmin(soft) {
   const main = $('#main'); if (!main) return;
@@ -1533,12 +1576,13 @@ function renderAdmin(soft) {
     if (S.adminTab === 'perf') loadStats();
     if (S.adminTab === 'feed') loadFeed();
     if (S.adminTab === 'team') loadTodayStats();
+    if (S.adminTab === 'sends') loadSends();
   }
-  const tabs = [['team', 'Team & users'], ['perf', 'Rep performance'], ['dest', 'Progress by destination'], ['data', 'Import & export'], ['feed', 'Recent activity']];
+  const tabs = [['team', 'Team & users'], ['sends', 'Emails & joins'], ['perf', 'Rep performance'], ['dest', 'Progress by destination'], ['data', 'Import & export'], ['feed', 'Recent activity']];
   const scroll = main.scrollTop;
   main.innerHTML = `<div class="head"><div><h2>Admin & performance</h2><div class="sub">Only admins can see this page</div></div></div>
     <div class="tabs">${tabs.map(([k, l]) => `<button class="tab${S.adminTab === k ? ' on' : ''}" data-tab="${k}">${l}</button>`).join('')}</div>
-    <div id="adm">${({ team: admTeam, perf: admPerf, dest: admDest, data: admData, feed: admFeed })[S.adminTab]()}</div>`;
+    <div id="adm">${({ team: admTeam, sends: admSends, perf: admPerf, dest: admDest, data: admData, feed: admFeed })[S.adminTab]()}</div>`;
   if (soft) main.scrollTop = scroll;
   if (S.adminTab === 'data') wireDrop();
 }
@@ -1624,6 +1668,7 @@ async function onAdminClick(e) {
   const t = e.target;
   const tab = t.closest('[data-tab]'); if (tab) { S.adminTab = tab.dataset.tab; return renderAdmin(); }
   const per = t.closest('[data-period]'); if (per) { S.perfFrom = per.dataset.period; S.stats = null; renderAdmin(true); return loadStats(); }
+  const sm = t.closest('[data-smonth]'); if (sm) { S.sendMonth = sm.dataset.smonth; return renderAdmin(true); }
   const go = t.closest('[data-goto]'); if (go) return openPro(+go.dataset.goto);
   const ctl = t.closest('[data-ctl]')?.dataset.ctl;
   if (ctl === 'genpw') { $('#nu-p').value = genPassword(); return; }
